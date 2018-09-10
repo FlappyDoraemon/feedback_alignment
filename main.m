@@ -46,6 +46,10 @@ iterations = floor(size(train_inputs,2) / batch_size);
 train_ff_loss_record = zeros(1,epochs);
 test_ff_loss_record = zeros(1,epochs);
 for epoch = 1:1:epochs
+    train_correct = 0;
+    train_total = 0;
+    test_correct = 0;
+    total = 0;
     % training 
     for iter = 1:1:iterations
         for i = 1:1:nLays
@@ -55,6 +59,9 @@ for epoch = 1:1:epochs
             train_input = train_inputs(:,(iter-1)*batch_size+batch_idx);
             train_target = train_targets(:,(iter-1)*batch_size+batch_idx);
             train_states = classification_feedforward(train_input , W, 'activation', 'sigmoid');
+            train_prediction = find(train_states{1,nLays}==max(train_states{1,nLays}));
+            train_correct = train_correct + (train_target(train_prediction) > 0);
+            train_total = train_total + 1;
             % calculate the classification loss and gradient
             [train_ff_loss, dW] = classification_feedback(train_input, train_states, train_target, W, B, 'activation', 'sigmoid');
             for i = 1:1:nLays
@@ -68,7 +75,8 @@ for epoch = 1:1:epochs
         end
     end
     train_ff_loss_record(1,epoch) = train_ff_loss_record(1,epoch) / iterations / batch_size;
-    disp(['Epoch-' num2str(epoch) ': training loss is ' num2str(train_ff_loss_record(1,epoch))]);
+    disp(['Epoch-' num2str(epoch) ': training loss is ' num2str(train_ff_loss_record(1,epoch)) ...
+        '; The prediction accuracy is ' num2strr(train_correct/train_total)]);
     % testing
     for iter = 1:1:size(test_inputs,2)
         test_input = test_inputs(:,iter);
@@ -76,9 +84,12 @@ for epoch = 1:1:epochs
         test_states = classification_feedforward(test_input , W, 'activation', 'sigmoid');
         [test_ff_loss , ~] = classification_feedback(test_input, test_states, test_target, W, B, 'activation', 'sigmoid');
         test_ff_loss_record(1,epoch) = test_ff_loss_record(1,epoch) + test_ff_loss;
+        test_prediction = find(test_states{1,nLays}==max(test_states{1,nLays}));
+        test_correct = test_correct + (test_target(test_prediction) > 0);
     end
     test_ff_loss_record(1,epoch) = test_ff_loss_record(1,epoch) / size(test_inputs,2);
-    disp(['Epoch-' num2str(epoch) ': testing loss is ' num2str(test_ff_loss_record(1,epoch))]);
+    disp(['Epoch-' num2str(epoch) ': testing loss is ' num2str(test_ff_loss_record(1,epoch)) ...
+        '; The prediction accuracy is ' num2strr(test_correct/test_total)]);
 end
 
     
