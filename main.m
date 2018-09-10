@@ -86,6 +86,7 @@ for epoch = 1:1:epochs
         test_ff_loss_record(1,epoch) = test_ff_loss_record(1,epoch) + test_ff_loss;
         test_prediction = find(test_states{1,nLays}==max(test_states{1,nLays}));
         test_correct = test_correct + (test_target(test_prediction) > 0);
+        test_total = test_total + 1;
     end
     test_ff_loss_record(1,epoch) = test_ff_loss_record(1,epoch) / size(test_inputs,2);
     disp(['Epoch-' num2str(epoch) ': testing loss is ' num2str(test_ff_loss_record(1,epoch)) ...
