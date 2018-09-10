@@ -49,7 +49,7 @@ for epoch = 1:1:epochs
     train_correct = 0;
     train_total = 0;
     test_correct = 0;
-    total = 0;
+    test_total = 0;
     % training 
     for iter = 1:1:iterations
         for i = 1:1:nLays
