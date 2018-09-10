@@ -76,7 +76,7 @@ for epoch = 1:1:epochs
     end
     train_ff_loss_record(1,epoch) = train_ff_loss_record(1,epoch) / iterations / batch_size;
     disp(['Epoch-' num2str(epoch) ': training loss is ' num2str(train_ff_loss_record(1,epoch)) ...
-        '; The prediction accuracy is ' num2strr(train_correct/train_total)]);
+        '; The prediction accuracy is ' num2str(train_correct/train_total)]);
     % testing
     for iter = 1:1:size(test_inputs,2)
         test_input = test_inputs(:,iter);
@@ -89,7 +89,7 @@ for epoch = 1:1:epochs
     end
     test_ff_loss_record(1,epoch) = test_ff_loss_record(1,epoch) / size(test_inputs,2);
     disp(['Epoch-' num2str(epoch) ': testing loss is ' num2str(test_ff_loss_record(1,epoch)) ...
-        '; The prediction accuracy is ' num2strr(test_correct/test_total)]);
+        '; The prediction accuracy is ' num2str(test_correct/test_total)]);
 end
 
     
